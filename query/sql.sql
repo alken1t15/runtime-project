@@ -1,16 +1,16 @@
 create table movie
 (
-    id     serial8 primary key,
+    id     serial primary key,
     name   varchar(255) not null,
-    year   varchar(255) not null,
+    year   date not null,
     rating numeric(4, 2) default 0.0,
     count  int2         not null
 );
 create table actor
 (
     id       serial primary key,
-    name     varchar,
-    surname  varchar,
+    name     varchar(255) not null ,
+    surname  varchar(255) not null ,
     movie_id integer references movie (id) on delete cascade on update cascade
 );
 create table director
