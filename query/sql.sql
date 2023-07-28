@@ -34,7 +34,6 @@ create table genre
 );
 create table movie_to_genre
 (
-    id       serial primary key,
     movie_id integer references movie (id) on delete cascade on update cascade,
     genre_id integer references genre (id) on delete cascade on update cascade
 );
