@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск фильмов</title>
+    <!-- Подключение Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Поиск фильмов</h1>
+    <form th:method="GET" th:action="@{/movie}">
+        <!-- Поиск по названию фильма -->
+        <div class="form-group">
+            <label for="title">Поиск по названию фильма:</label>
+            <input type="text" name="name" class="form-control" id="title" placeholder="Введите название фильма">
+        </div>
+
+        <!-- Поиск по году выпуска -->
+        <div class="form-group">
+            <label for="year">Поиск по году фильма:</label>
+            <input type="number" name="year" class="form-control" id="year" placeholder="Введите год выпуска">
+        </div>
+
+        <!-- Поиск по режиссеру -->
+        <div class="form-group">
+            <label for="director">Поиск по режиссеру:</label>
+            <input type="text" name="director" class="form-control" id="director" placeholder="Введите имя режиссера">
+        </div>
+
+        <!-- Поиск по актеру -->
+        <div class="form-group">
+            <label for="actor">Поиск по актеру:</label>
+            <input type="text" name="actor" class="form-control" id="actor" placeholder="Введите имя актера">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Искать</button>
+    </form>
+
+    <!-- Результаты поиска будут отображаться здесь -->
+    <div id="searchResults" class="mt-4">
+        <!-- Здесь будут отображаться результаты поиска -->
+        <div class="card mt-2" th:each="film : ${movieList}">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${film.name}">Название фильма</h5>
+                <p th:text="'Год выпуска: ' + ${film.year}">Год выпуска: </p>
+                <p>
+                    Жанры: <span th:each="genre : ${film.getGenreList}" th:text="${genre.name}, "></span>
+                </p>
+                <p>Режиссеры:</p>
+                <p th:each="director : ${film.getDirectors()}"> <span th:text="${director.name}"></span> <span th:text="${director.surname}"></span></p>
+                <p>Актеры:</p>
+                <p th:each="actor : ${film.getActors()}"> <span th:text="${actor.name}"></span> <span th:text="${actor.surname}"></span></p>
+                <p th:text="'Рейтинг: ' + ${film.rating}">Рейтинг: </p>
+                <p th:text="'Количество на складе: ' + ${film.count}">Количество на складе: </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Подключение Bootstrap JS (необходимо для работы интерактивных элементов) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

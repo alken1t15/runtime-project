@@ -2,6 +2,7 @@ package com.example.runtimeproject.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ import java.util.List;
 @Table(name = "movie")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +20,7 @@ public class Movie {
 
     private String name;
 
-    private LocalDate year;
+    private Integer year;
 
     private Double rating;
 
@@ -29,4 +31,8 @@ public class Movie {
 
     @OneToMany(mappedBy = "movie")
     private List<Director> directors;
+
+    @ManyToMany()
+    @JoinTable(name = "movie_to_genre",joinColumns = @JoinColumn(name = "movie_id"),inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    private List<Genre> genreList;
 }

@@ -2,7 +2,7 @@ create table movie
 (
     id     serial primary key,
     name   varchar(255) not null,
-    year   date not null,
+    year   int2 not null,
     rating numeric(4, 2) default 0.0,
     count  int2         not null
 );
@@ -44,21 +44,53 @@ VALUES ('fdsfsd', 4323, 45);
 insert into comment (comment, movie_id)
 values ('dsfdsfsdfdsf', 1);
 
--- вставка начальных данных
+-- вставка начальных фильм
 insert into movie(name, year, rating, count)
 values ('Guardians of the Galaxy',
         2014,
         8.1,
         5);
-
+insert into movie(name, year, rating, count)
+values ('Prometheus',
+        2012,
+        7,
+        5);
+-- вставка жанр
 insert into genre(name) values ('Action');
 insert into genre(name) values ('Horror');
 insert into genre(name) values ('Adventure');
-
+insert into genre(name) values ('Sci-Fi');
+insert into genre(name) values ('Thriller');
+insert into genre(name) values ('Animation');
+insert into genre(name) values ('Comedy');
+insert into genre(name) values ('Family');
+insert into genre(name) values ('Drama');
+insert into genre(name) values ('Music');
+insert into genre(name) values ('Fantasy');
+insert into genre(name) values ('History');
+insert into genre(name) values ('Biography');
+insert into genre(name) values ('Crime');
+-- вставка актеры
 insert into actor(name, surname, movie_id)
 values ('Chris',
         'Pratt',
         (select id from movie where name = 'Guardians of the Galaxy'));
+insert into actor(name, surname, movie_id)
+values ('Vin',
+        'Diesel',
+        (select id from movie where name = 'Guardians of the Galaxy'));
+
+insert into actor(name, surname, movie_id)
+values ('Bradley',
+        'Cooper',
+        (select id from movie where name = 'Guardians of the Galaxy'));
+
+insert into actor(name, surname, movie_id)
+values ('Zoe',
+        'Saldana',
+        (select id from movie where name = 'Guardians of the Galaxy'));
+
+-- вставка режиссер
 
 insert into director(name, surname, movie_id)
 values ('James',
@@ -126,3 +158,5 @@ select *
 from director;
 select *
 from movie;
+
+select m FROM Movie m inner join Director d on m.id = d.movie_id inner join Actor a on m.id = a.movie_id where 'Guardians of the Galaxy' = m.name and 2014 = m.year and 'James'= d.name and 'Gunn'= d.surname and 'Vin'= a.name and 'Diesel' = a.surname
