@@ -29,27 +29,44 @@ public class MainController {
 
     @GetMapping
     public String mainPage(@RequestParam(required = false) String name, @RequestParam(required = false) Integer year, @RequestParam(required = false) String director,
-                           @RequestParam(required = false) String actor, Model model){
+                           @RequestParam(required = false) String actor, Model model) {
         List<Movie> movieList = null;
-        if (!name.isEmpty() && year != null && !director.isEmpty() && !actor.isEmpty()){
-            movieList = movieService.findByNameAndYearAndDirectorsAndActors(name,year,director,actor);
-        }
-        else if(!name.isEmpty() && year== null && director.isEmpty() && actor.isEmpty()){
+        if (name == null) {
+            movieList = movieService.findAll();
+        } else if (!name.isEmpty() && year != null && !director.isEmpty() && !actor.isEmpty()) {
+            movieList = movieService.findByNameAndYearAndDirectorsAndActors(name, year, director, actor);
+        } else if (!name.isEmpty() && year != null && !director.isEmpty() && actor.isEmpty()) {
+            movieList = movieService.findMovieNameYearDirector(name, year, director);
+        } else if (!name.isEmpty() && year != null && director.isEmpty() && !actor.isEmpty()) {
+            movieList = movieService.findMovieNameYearActor(name, year, actor);
+        } else if (!name.isEmpty() && year != null && director.isEmpty() && actor.isEmpty()) {
+            movieList = movieService.findMovieNameYear(name, year);
+        } else if (!name.isEmpty() && year == null && !director.isEmpty() && !actor.isEmpty()) {
+            movieList = movieService.findMovieNameDirectorActor(name, director, actor);
+        } else if (!name.isEmpty() && year == null && !director.isEmpty() && actor.isEmpty()) {
+            movieList = movieService.findMovieNameDirector(name, director);
+        } else if (!name.isEmpty() && year == null && director.isEmpty() && !actor.isEmpty()) {
+            movieList = movieService.findMovieNameActor(name, actor);
+        } else if (name.isEmpty() && year != null && !director.isEmpty() && !actor.isEmpty()) {
+            movieList = movieService.findMovieYearDirectorActor(year, director, actor);
+        } else if (name.isEmpty() && year != null && !director.isEmpty() && actor.isEmpty()) {
+            movieList = movieService.findMovieYearDirector(year, director);
+        } else if (name.isEmpty() && year != null && director.isEmpty() && !actor.isEmpty()) {
+            movieList = movieService.findMovieYearActor(year, actor);
+        } else if (name.isEmpty() && year != null && !director.isEmpty() && !actor.isEmpty()) {
+            movieList = movieService.findMovieDirectorActor(director, actor);
+        } else if (!name.isEmpty() && year == null && director.isEmpty() && actor.isEmpty()) {
             movieList = movieService.findAllByNameStartingWith(name);
-        }
-        else if(name.isEmpty() && year!= null && director.isEmpty() && actor.isEmpty()){
+        } else if (name.isEmpty() && year != null && director.isEmpty() && actor.isEmpty()) {
             movieList = movieService.findAllByYear(year);
-        }
-        else if(name.isEmpty() && year== null && !director.isEmpty() && actor.isEmpty()){
-            movieList= directorService.findAllByNameStartingWith(director);
-        }
-        else if(name.isEmpty() && year== null && director.isEmpty() && !actor.isEmpty()){
-            movieList= actorService.findAllByNameStartingWith(actor);
-        }
-        else {
+        } else if (name.isEmpty() && year == null && !director.isEmpty() && actor.isEmpty()) {
+            movieList = directorService.findAllByNameStartingWith(director);
+        } else if (name.isEmpty() && year == null && director.isEmpty() && !actor.isEmpty()) {
+            movieList = actorService.findAllByNameStartingWith(actor);
+        } else {
             movieList = movieService.findAll();
         }
-        model.addAttribute("movieList",movieList);
+        model.addAttribute("movieList", movieList);
         return "main_page";
     }
 }
